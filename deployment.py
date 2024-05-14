@@ -22,6 +22,7 @@ def prepare_text(text):
 load_model_svm=joblib.load(open("email_classification_model_svm", 'rb'))
 load_model_log=joblib.load(open("email_classification_model_logistic", 'rb'))
 load_model_dt=joblib.load(open("email_classification_model_dt", 'rb'))
+load_model_rf=joblib.load(open("email_classification_model_rf", 'rb'))
 
 st.write('# Test Your Email..')
 
@@ -33,7 +34,7 @@ st.subheader('Enter Your Text Email')
 
 
 email_text = st.text_area("Your email here...", height=100)
-models=st.selectbox('Choose Model', ['Logistic Regression Model', 'SVC Model', 'Decision Tree Model'])
+models=st.selectbox('Choose Model', ['Logistic Regression Model', 'SVC Model', 'Decision Tree Model','Random Forest Model'])
 
 sample = prepare_text(email_text)
 
@@ -53,13 +54,22 @@ elif models=='Logistic Regression Model':
     else:
         st.write("!!!sorry D: , this email is spam")
 
-else :
+elif models == 'SVC Model':
     pred_Y=load_model_svm.predict(sample)
     if pred_Y==0:
         st.balloons()
         st.write("the email is ham")
     else:
         st.write("!!!sorry D: , this email is spam")
+
+else :
+    pred_Y=load_model_rf.predict(sample)
+    if pred_Y==0:
+        st.balloons()
+        st.write("the email is ham")
+    else:
+        st.write("!!!sorry D: , this email is spam")
+
 
 
         
